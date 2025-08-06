@@ -1,0 +1,6 @@
+claude-code/projects
+claude-code/todos
+claude-code/statsig
+claude-code/shell-snapshots
+**/*.txt
+**/*.log

@@ -1,0 +1,45 @@
+{
+  "cleanupPeriodDays": 14,
+  "permissions": {
+    "allow": [
+      "Bash(yarn format)",
+      "Bash(yarn build)",
+      "Bash(yarn build-ts)",
+      "Bash(yarn install)",
+      "Bash(bun:*)",
+      "Bash(bun *)",
+      "Bash(rg:*)",
+      "Bash(rg *)"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "Bash(curl *)",
+      "Bash(aws:*)",
+      "Bash(aws *)",
+      "Bash(ssh:*)",
+      "Bash(ssh *)",
+      "Bash(git:*)",
+      "Bash(git *)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
+  },
+  "includeCoAuthoredBy": false,
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/scripts/handle_notification.sh"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.' >> ~/.claude/bash-command-log-full.log"
+          }
+        ]
+      }
+    ]
+  }
+}
