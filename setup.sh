@@ -165,7 +165,7 @@ show_info() {
 }
 
 setup_sub_agents() {
-  local sub_agents_dir="${SCRIPT_DIR}/${PACKAGE}/agents"
+  local sub_agents_dir="${TARGET_DIR}/agents"
 
   if [[ ${#SUB_AGENTS_URLS[@]} -eq 0 ]]; then
     log_warn "No sub-agent URLs configured. Please add URLs to the SUB_AGENTS_URLS array."
@@ -181,18 +181,18 @@ setup_sub_agents() {
   log_info "Setting up sub-agents in ${sub_agents_dir}..."
 
   # Download URLs one by one
+  pushd "${sub_agents_dir}"
   for url in "${SUB_AGENTS_URLS[@]}"; do
     if [[ -n "${url}" && ! "${url}" =~ ^[[:space:]]*# ]]; then
-      pushd "${sub_agents_dir}"
       log_info "Downloading: ${url}"
       if curl -sLO "${url}"; then
         log_info "Successfully downloaded: $(basename "${url}")"
       else
         log_error "Failed to download: ${url}"
       fi
-      popd
     fi
   done
+  popd
 
   log_info "Sub-agents setup completed"
 }
