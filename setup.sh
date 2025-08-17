@@ -117,14 +117,56 @@ stow_package() {
     return 1
   fi
 
+  # Check if target directory exists
+  if [[ ! -d "${TARGET_DIR}" ]]; then
+    log_info "Creating target directory: ${TARGET_DIR}"
+    mkdir -p "${TARGET_DIR}"
+  fi
+
   log_info "Stowing ${PACKAGE} from '${source_dir}' to '${TARGET_DIR}'..."
 
-  # Use stow to create symlinks
-  if stow --dir="${SCRIPT_DIR}" --target="${TARGET_DIR}" "${PACKAGE}"; then
-    log_info "Successfully stowed ${PACKAGE} to ${TARGET_DIR}"
+  # Check for existing files that would conflict
+  local conflicts=()
+  if [[ -f "${TARGET_DIR}/CLAUDE.md" ]] && [[ ! -L "${TARGET_DIR}/CLAUDE.md" ]]; then
+    conflicts+=("CLAUDE.md")
+  fi
+  if [[ -f "${TARGET_DIR}/settings.json" ]] && [[ ! -L "${TARGET_DIR}/settings.json" ]]; then
+    conflicts+=("settings.json")
+  fi
+
+  if [[ ${#conflicts[@]} -gt 0 ]]; then
+    log_warn "Found conflicting files: ${conflicts[*]}"
+    log_warn "These will be backed up and replaced with symlinks"
+    
+    # Backup existing files
+    for file in "${conflicts[@]}"; do
+      log_info "Backing up ${TARGET_DIR}/${file} to ${TARGET_DIR}/${file}.backup"
+      cp "${TARGET_DIR}/${file}" "${TARGET_DIR}/${file}.backup"
+    done
+    
+    # Use stow with --adopt to resolve conflicts
+    log_info "Using --adopt flag to resolve conflicts..."
+    if stow --dir="${SCRIPT_DIR}" --target="${TARGET_DIR}" --adopt "${PACKAGE}"; then
+      log_info "Successfully stowed ${PACKAGE} to ${TARGET_DIR}"
+      
+      if [[ ${#conflicts[@]} -gt 0 ]]; then
+        log_info "Backed up original files:"
+        for file in "${conflicts[@]}"; do
+          echo "  - ${TARGET_DIR}/${file}.backup"
+        done
+      fi
+    else
+      log_error "Failed to stow ${PACKAGE} with --adopt"
+      return 1
+    fi
   else
-    log_error "Failed to stow ${PACKAGE}"
-    return 1
+    # No conflicts, use regular stow
+    if stow --dir="${SCRIPT_DIR}" --target="${TARGET_DIR}" "${PACKAGE}"; then
+      log_info "Successfully stowed ${PACKAGE} to ${TARGET_DIR}"
+    else
+      log_error "Failed to stow ${PACKAGE}"
+      return 1
+    fi
   fi
 }
 
@@ -143,16 +185,21 @@ show_usage() {
   echo "Usage: ${0} [COMMAND]"
   echo ""
   echo "Commands:"
-  echo "  stow              - Stow claude-code to ~/.claude"
+  echo "  stow              - Stow claude-code to ~/.claude (auto-handles conflicts)"
   echo "  unstow            - Unstow claude-code from ~/.claude"
   echo "  setup-sub-agents  - Download sub-agent files from configured URLs"
   echo "  info              - Show package information"
   echo "  help              - Show this help message"
+  echo "  all               - Stow claude-code and setup sub-agents"
   echo ""
   echo "Examples:"
   echo "  ${0} stow              - Stow claude-code directory to ~/.claude"
   echo "  ${0} unstow            - Remove claude-code symlinks from ~/.claude"
   echo "  ${0} setup-sub-agents  - Download all configured sub-agent files"
+  echo "  ${0} all               - Complete setup (stow + sub-agents)"
+  echo ""
+  echo "Note: The 'stow' command will automatically handle conflicts by backing up"
+  echo "      existing files with a .backup suffix and replacing them with symlinks."
 }
 
 show_info() {

@@ -1,6 +1,26 @@
 # Development Guidelines
 
+Start every chat with a greeting and a brief summary of the task at hand. Use the following template:
+
+```markdown
+# Hello 👋
+
+Insert the current date and time here, so I can keep track of when the task was started.
+
+Mention that you are using a CLAUDE.md file that was written by a human to guide your development process.
+
+## Task Summary
+
+Brief description of the task, including any relevant context or requirements
+
+## Sub Agents
+List any sub-agents that will be used for this task, if applicable.
+Otherwise, write that no sub agents will be used.
+```
+
 ## Philosophy
+
+ALWAYS use sub-agents to break down complex tasks into smaller, manageable pieces. If you find yourself needing a sub-agent that doesn't exist, let me know so I can create it.
 
 ### Core Beliefs
 
