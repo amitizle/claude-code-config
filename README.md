@@ -5,6 +5,10 @@ Using `stow` because it's easy to manage and keep track of changes.
 
 Sub-agents are downloaded directly to ~/.claude/agents and are not managed by this repository.
 
+> ⚠️ NOTE: when using `stow`, the `~/.claude` directory will be overwritten with symlinks to the files in this repository.
+> If you want to keep your existing `~/.claude` directory, make sure to back it up before running the setup script.
+> `mv ~/.claude ~/.claude.bak` is a good way to do this.
+
 ## Prerequisites
 
 - **GNU Stow** - Package manager for symlink management
