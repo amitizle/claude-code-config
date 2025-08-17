@@ -96,8 +96,8 @@ echo '{"message": "Your message here"}' | ./handle_notification.sh
 3. Run the setup script:
 
 ```bash
-git clone <repository-url> ai-tools
-cd ai-tools
+git clone <repository-url>
+cd claude-code-config
 ./setup.sh all
 ```
 
@@ -108,7 +108,6 @@ This will:
 ## Directory Structure
 
 ```
-ai-tools/
 ├── README.md
 ├── setup.sh                                    # Main setup script
 └── claude-code/                               # Claude Code configuration
