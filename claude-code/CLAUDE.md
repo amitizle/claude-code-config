@@ -48,7 +48,6 @@ Break complex work into a few stages.
 ```markdown
 ## Stage N: [Name]
 **Goal**: [Specific deliverable]
-**Success Criteria**: [Testable outcomes]
 **Tests**: [Specific test cases]
 **Status**: [X or V]
 ```
@@ -57,8 +56,8 @@ Break complex work into a few stages.
 ### 2. Implementation Flow
 
 1. **Understand** - Study existing patterns in codebase
-2. **Test** - Write test first (red)
-3. **Implement** - Minimal code to pass (green)
+2. **Test** - Write test first
+3. **Implement** - Minimal code to pass
 4. **Refactor** - Clean up with tests passing
 5. **Commit** - With clear message linking to plan
 
@@ -96,27 +95,37 @@ Break complex work into a few stages.
 
 ### Code Quality
 
-- **Every commit must**:
+- **Every change must**:
   - Compile successfully
   - Pass all existing tests
   - Include tests for new functionality
   - Follow project formatting/linting
-
-- **Before committing**:
-  - Run formatters/linters
-  - Self-review changes
-  - Ensure commit message explains "why"
 
 - **Add Logging**:
   - Use existing logging framework
   - Log at appropriate levels (info, debug, error)
   - Avoid excessive logging that clutters output
 
+- **Always use existing modules and libraries**
+  - For example in Terraform, use existing modules instead of writing new ones
+  - Make the modules/libraries reusable and generic, using inputs and outputs to make them flexible
+  - Use existing libraries for common tasks (e.g., date manipulation, string formatting)
+
 - **Do not document code** 
   - Code should be self-explanatory
   - Use meaningful names for variables, functions, classes
   - Write comments only when necessary to explain intent or complex logic
   - **Unless** you found a way to implement a piece of the code that cannot be self explanatory
+
+### Monitoring & Observability
+
+On every change, write the plans to monitor and observe the newly added or modified functionality.
+- **Define metrics** to track success/failure
+- **Set up logging** for critical paths
+- **Use existing monitoring tools** in the project
+- **Document** how to interpret logs/metrics
+- **Suggest both metrics and logs based monitors**, don't be tool specific
+- It's all suggestions, do not implement monitors. Do implement logs. If you think we should rely on a log to monitor something, comment with a NOTE on that log line
 
 ### Error Handling
 
