@@ -137,18 +137,18 @@ stow_package() {
   if [[ ${#conflicts[@]} -gt 0 ]]; then
     log_warn "Found conflicting files: ${conflicts[*]}"
     log_warn "These will be backed up and replaced with symlinks"
-    
+
     # Backup existing files
     for file in "${conflicts[@]}"; do
       log_info "Backing up ${TARGET_DIR}/${file} to ${TARGET_DIR}/${file}.backup"
       cp "${TARGET_DIR}/${file}" "${TARGET_DIR}/${file}.backup"
     done
-    
+
     # Use stow with --adopt to resolve conflicts
     log_info "Using --adopt flag to resolve conflicts..."
     if stow --dir="${SCRIPT_DIR}" --target="${TARGET_DIR}" --adopt "${PACKAGE}"; then
       log_info "Successfully stowed ${PACKAGE} to ${TARGET_DIR}"
-      
+
       if [[ ${#conflicts[@]} -gt 0 ]]; then
         log_info "Backed up original files:"
         for file in "${conflicts[@]}"; do
