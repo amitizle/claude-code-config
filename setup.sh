@@ -17,7 +17,6 @@ SUB_AGENTS_URLS=(
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/cypress-expert.md"
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/deno-expert.md"
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/docker-expert.md"
-  "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/dynamodb-expert.md"
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/elasticsearch-expert.md"
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/express-expert.md"
   "https://raw.githubusercontent.com/0xfurai/claude-code-subagents/refs/heads/main/agents/github-actions-expert.md"
@@ -82,6 +81,10 @@ SUB_AGENTS_URLS=(
   "https://raw.githubusercontent.com/wshobson/agents/refs/heads/main/prompt-engineer.md"
   "https://raw.githubusercontent.com/wshobson/agents/refs/heads/main/risk-manager.md"
   "https://raw.githubusercontent.com/wshobson/agents/refs/heads/main/security-auditor.md"
+  "https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/refs/heads/main/categories/08-business-product/legal-advisor.md"
+  "https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/refs/heads/main/categories/08-business-product/customer-success-manager.md"
+  "https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/refs/heads/main/categories/06-developer-experience/build-engineer.md"
+  "https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/refs/heads/main/categories/06-developer-experience/mcp-developer.md"
 )
 
 # Colors for output
@@ -239,8 +242,11 @@ setup_sub_agents() {
       fi
     fi
   done
-  popd
 
+  popd
+  # Copy sub agents from agents/*.md to target directory
+  echo "Copying sub agents from agents/*.md to $sub_agents_dir..."
+  cp agents/*.md "$sub_agents_dir/"
   log_info "Sub-agents setup completed"
 }
 
